@@ -35,12 +35,6 @@ export default {
     searchedItem: {
       type: String
     }
-  },
-  setup(props) {
-    // watchEffect(() => {
-    //       props.searchedItem
-    //       console.log(props.searchedItem)
-    //   });
   }
 }
 </script>

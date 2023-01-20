@@ -1,8 +1,6 @@
 <template>
   <section>
-      <h1 class="header">
-        Top 10 Games
-      </h1>
+    <TheHeader :title="'Top 10 Games'" />
       <div>
         <suspense>
           <template #default>
@@ -22,7 +20,12 @@
 
 <script>
 import AsyncTopGames from "../components/AsyncTopGames.vue";
+import TheHeader from "../components/TheHeader.vue";
 export default{
-  components: { AsyncTopGames },
+  components: { AsyncTopGames, TheHeader },
 }
 </script>
+
+<style scoped>
+
+</style>>

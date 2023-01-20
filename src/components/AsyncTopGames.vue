@@ -11,11 +11,9 @@
         <div>
           <img v-if="game.background_image" :src="game.background_image" alt="image">
         </div>
-
+        <div v-if="err"> {{err}}</div>
       </div>
     </div>
-    <button @click="$router.go(-1)" class="btn btn-back">Back</button>
-
   </section>
 </template>
 
@@ -25,6 +23,7 @@ export default {
   async setup() {
     const data = ref([]);
     const apiKey = "7e6f5e92eb2b4fd99cbb0e664a1db752"
+    const err = ref()
 
     async function getTop() {
       try {
@@ -37,13 +36,14 @@ export default {
         data.value = await json.results
       }
       catch (e) {
-        console.log('Error has occured:' + e)
+        err.value = e
       }
     }
 
     await getTop()
 
     return {
+      err,
       getTop,
       data
     }

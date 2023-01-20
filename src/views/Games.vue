@@ -1,6 +1,8 @@
 <template>
-  <div>
-    <h1 class="header">Gamelist for you</h1>
+  <div class="Games">
+    <header>
+      <TheHeader :title="'Games for you'" />
+    </header>
     <suspense>
       <template #default>
       <GamesResults />
@@ -17,8 +19,9 @@
 
 <script>
   import GamesResults from "../components/GamesResults.vue"
+import TheHeader from "../components/TheHeader.vue";
 export default {
-components:{GamesResults}
+components:{ GamesResults, TheHeader }
 }
 </script>
 

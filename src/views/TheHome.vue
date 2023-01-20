@@ -19,9 +19,15 @@
           </button>
         </div>
       </div>
+      <a href="#search-list" v-if="searchedItem" class="indicator">
+        <p>Results</p>
+        <i class="fa fa-arrow-down"></i>
+      </a>
     </header>
   </section>
-  <search-list :searchedItem=searchedItem />
+  <search-list 
+  id="search-list"
+  :searchedItem=searchedItem />
 </template>
 
 <script>
@@ -56,6 +62,28 @@ export default {
 
 
 <style scoped lang="scss">
+.indicator{
+  position:absolute;
+  color:#fff;
+  bottom:-12%;
+  left:50%;
+  transform:translateX(-50%);
+  animation:blink 2s forwards ease-in-out;
+  & p{
+    margin:0.25rem;
+  }
+  & i{
+    font-size:1.25rem;
+  }
+}
+@keyframes blink{
+0%{
+  opacity:0.25;
+}
+75%{
+  opacity:1;
+}
+}
 .hero {
   overflow-y: hidden;
   background-color: #000;
@@ -67,7 +95,7 @@ header {
   color: #fff;
   text-align: center;
   position: absolute;
-  top: 30vh;
+  top: 15vh;
   left: 50%;
   transform: translateX(-50%);
 
@@ -116,10 +144,9 @@ header {
 
 .search-container {
   background: hsl(240, 1%, 26%);
-  padding: 1rem;
   display: grid;
   place-content: center;
-  max-width: 80%;
+  max-width: 90%;
   margin-inline: auto;
   margin-top: 2rem;
   border-radius: 10px;
@@ -129,7 +156,7 @@ header {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 1rem;
+  padding: 2rem;
 
   & span {
     color: red;

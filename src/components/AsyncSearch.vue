@@ -13,15 +13,14 @@
     </div>
     <span class="page-count" v-if="totalResults">Page:{{ page }} of {{ Math.ceil(totalResults / 20) }}</span>
     <div class="btns" v-if="totalResults">
-      <button class="btn btn-page" v-if="prevPage" @click="search(prevPage),
-      page--">Prev</button>
-      <button class="btn btn-page" @click="search(nextPage),
-      page++" v-if="nextPage">Next</button>
+      <button class="btn btn-page" v-if="prevPage" @click="search(prevPage)">Prev</button>
+      <button class="btn btn-page" @click="search(nextPage)" v-if="nextPage">Next</button>
     </div>
   </section>
   <div class="no-results" v-else-if="noResults">
     <p>no results found..</p>
   </div>
+  <div v-else-if="err">{{ err }}</div>
 </template>
 
 <script>
@@ -37,18 +36,23 @@ export default {
     const searchedGames = ref([]);
     const totalResults = ref();
     const apiKey = "7e6f5e92eb2b4fd99cbb0e664a1db752";
-    const page = ref(1);
     const noResults = ref(false);
     const nextPage = ref();
     const prevPage = ref();
-
+    const err = ref()
+    const page = ref(1)
     async function search(game) {
       try {
         const res = await fetch(`https://api.rawg.io/api/games?search=${game}&search_precise=true&key=${apiKey}`)
         const json = await res.json()
-        console.log(json)
         if (json.results.length > 0) {
           totalResults.value = json.count
+          if(json.next){
+            page.value = (json.next.split("page=").pop().split("&")[0])-1
+          }
+          else{
+            page.value = Math.ceil(json.count/20)
+          }
           json.results.sort((a, b) => {
             return new Date(b.released) - new Date(a.released);
           })
@@ -62,7 +66,7 @@ export default {
         }
       }
       catch (e) {
-        console.log('error' + e)
+        err.value = e
       }
     }
 
@@ -73,11 +77,12 @@ export default {
 
 
     return {
+      page,
       noResults,
       totalResults,
       searchedGames,
       search,
-      page,
+      err,
       nextPage,
       prevPage,
     };

@@ -55,16 +55,12 @@ img {
   }
 
   &-back {
-    margin-top: 1rem;
-    background: #000;
-    color: #fff;
+    background:#fff;
+    color: #000;
     display: inline-block;
-    padding: 0.5rem 1rem;
-    border-radius: 10px;
-
     &:hover {
-      background: #fff;
-      color: #000;
+      background: #000;
+      color: #fff;
     }
   }
 

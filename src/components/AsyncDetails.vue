@@ -1,8 +1,8 @@
 <template>
   <section v-if="gameDetails">
-
+    
     <div class="game">
-      <h1 class="game-title">{{ gameDetails.name }}</h1>
+      <TheHeader :title="gameDetails.name" />
       <img class="game-background" :src="gameDetails.background_image" alt="background image">
       <p class="game-score" v-if="gameDetails.metacritic" :style="{
         backgroundColor: gameDetails.scoreColor
@@ -53,7 +53,7 @@
         <img v-for="screen in gameScreenshots" :key="screen.id" :src="screen.image" alt="screenshot"
           @click="fullSize($event)">
       </div>
-      <button @click="$router.go(-1)" class="btn btn-back">Back</button>
+      
     </div>
     <div class="fullsize-image" v-if="fullImg">
       <span @click="fullImg = null">+</span>
@@ -67,84 +67,76 @@
 
 <script>
 import { ref } from '@vue/reactivity'
+import TheHeader from './TheHeader.vue'
 export default {
-  props: {
-    game: {
-      type: String
-    }
-  },
-  async setup(props) {
-    const gameDetails = ref()
-    const apiKey = "7e6f5e92eb2b4fd99cbb0e664a1db752"
-    const error = ref()
-    const gameScreenshots = ref()
-    const fullImg = ref()
-
-
-
-    async function getDetails(game) {
-      const res = await fetch(`https://api.rawg.io/api/games/${game}?key=${apiKey}`)
-      if (!res.ok) {
-        throw new Error(`Something went wrong, status: ${res.status}`)
-      }
-      else {
-        const json = await res.json()
-        gameDetails.value = await json
-
-        if (json.metacritic >= 85) {
-          gameDetails.value.scoreColor = 'lime'
+    props: {
+        game: {
+            type: String
         }
-        else if (json.metacritic < 85 && json.metacritic >= 70) {
-          gameDetails.value.scoreColor = 'greenyellow'
+    },
+    async setup(props) {
+        const gameDetails = ref();
+        const apiKey = "7e6f5e92eb2b4fd99cbb0e664a1db752";
+        const error = ref();
+        const gameScreenshots = ref();
+        const fullImg = ref();
+        async function getDetails(game) {
+            const res = await fetch(`https://api.rawg.io/api/games/${game}?key=${apiKey}`);
+            if (!res.ok) {
+                throw new Error(`Something went wrong, status: ${res.status}`);
+            }
+            else {
+                const json = await res.json();
+                gameDetails.value = await json;
+                if (json.metacritic >= 85) {
+                    gameDetails.value.scoreColor = "lime";
+                }
+                else if (json.metacritic < 85 && json.metacritic >= 70) {
+                    gameDetails.value.scoreColor = "greenyellow";
+                }
+                else if (json.metacritic < 70 && json.metacritic >= 55) {
+                    gameDetails.value.scoreColor = "yellow";
+                }
+                else if (json.metacritic < 55 && json.metacritic > 40) {
+                    gameDetails.value.scoreColor = "orange";
+                }
+                else {
+                    gameDetails.value.scoreColor = "red";
+                }
+            }
         }
-        else if (json.metacritic < 70 && json.metacritic >= 55) {
-          gameDetails.value.scoreColor = 'yellow'
+        async function getScreenshots(game) {
+            const res = await fetch(`https://api.rawg.io/api/games/${game}/screenshots?key=${apiKey}`);
+            if (!res.ok) {
+                throw new Error(`Something went wrong, status: ${res.status}`);
+            }
+            else {
+                const json = await res.json();
+                gameScreenshots.value = await json.results;
+            }
         }
-        else if (json.metacritic < 55 && json.metacritic > 40) {
-          gameDetails.value.scoreColor = 'orange'
+        function fullSize(e) {
+            fullImg.value = e.target.src;
         }
-        else {
-          gameDetails.value.scoreColor = 'red'
+        async function getAll(game) {
+            try {
+                await getDetails(game);
+                await getScreenshots(game);
+            }
+            catch (e) {
+                error.value = e;
+            }
         }
-      }
-    }
-    async function getScreenshots(game) {
-      const res = await fetch(`https://api.rawg.io/api/games/${game}/screenshots?key=${apiKey}`)
-      console.log(res)
-      if (!res.ok) {
-        throw new Error(`Something went wrong, status: ${res.status}`)
-      }
-      else {
-        const json = await res.json()
-        gameScreenshots.value = await json.results
-      }
-    }
-
-
-    function fullSize(e) {
-      fullImg.value = e.target.src
-    }
-
-    async function getAll(game) {
-      try {
-        await getDetails(game)
-        await getScreenshots(game)
-      }
-      catch (e) {
-        error.value = e
-      }
-    }
-
-    await getAll(props.game)
-
-    return {
-      error,
-      fullSize,
-      gameScreenshots,
-      gameDetails,
-      fullImg,
-    }
-  }
+        await getAll(props.game);
+        return {
+            error,
+            fullSize,
+            gameScreenshots,
+            gameDetails,
+            fullImg,
+        };
+    },
+    components: { TheHeader }
 }
 </script>
 
@@ -275,5 +267,13 @@ export default {
   align-items: baseline;
   padding: 1rem;
 }
+
+@media(min-width:600px){
+  .game-platforms-items{
+    display:flex;
+    justify-content: center;
+  }
+}
+
 </style>
 
