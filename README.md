@@ -1,7 +1,26 @@
 # Vue 3 + Vite
+# Games App
+> Simple games app made in Vue 3 + Vite and Sass
+> Live demo [_here_](https://artzartur.github.io/games-app).
 
-This template should help get you started developing with Vue 3 in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
 
-## Recommended IDE Setup
+## General Information
+- Games app with search engine, games propositions, top 10 games ranking and also detailed informations about thousands of games.
 
-- [VS Code](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar)
+
+## Technologies Used
+- Vue 3 + Vite 3
+- Vue Router 4
+- CSS 3 / SASS
+
+
+## Features
+List the ready features here:
+- Search engine
+- Top 10 Games ranking
+- Games proposition with pagination
+- Games informations and screenshots
+
+
+## Contact
+Created by [@artur](mailto:arturlesnik@gmail.com) - feel free to contact me!
