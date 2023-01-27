@@ -6,7 +6,7 @@
 
 ## General Information
 - Games app with search engine, games propositions, top 10 games ranking and also detailed informations about thousands of games.
-
+API used in app is [_RAWG Video Games Database_](https://rawg.io/apidocs)
 
 ## Technologies Used
 - Vue 3 + Vite 3
